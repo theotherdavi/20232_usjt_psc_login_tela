@@ -16,25 +16,31 @@ public class ConnectionFactory {
     private static final String user = dotenv.get("USER");
     private static final String password = dotenv.get("PASSWORD");
     private static final String db = dotenv.get("DB");
-    private static final String ssl = dotenv.get("SSLMODE");
+    private static final String engine = dotenv.get("ENGINE");
+    private static final String ssl = dotenv.get("SSL");
+    private static String s;
 
     public static Connection conectar() throws Exception {
         // http://dontpad.com:80/bossini
         // String de conexão
         // String s = "jdbc:mysql://" + host + ":" + port + "/" + db;
-        String s = String.format(
-                "postgres://%s@%s:%s/%s?sslmode=%s",
-                password, host, port, db, ssl);
+        s = String.format(
+            "jdbc:%s://%s:%s/%s?ssl=%s",
+            engine, host, port, db, ssl
+        );
 
         Connection c = DriverManager.getConnection(
-                s,
-                user,
-                password);
+            s,
+            user,
+            password
+        );
+
         return c;
     }
 
-    public static void main(String[] args) {
-        System.out.println(password);
+    public static void main(String[] args) throws Exception {
+        var fabrica = new ConnectionFactory();
+        System.out.println(conectar());
     }
 
 }

@@ -113,15 +113,21 @@ public class TelaLogin extends javax.swing.JFrame {
         // Get the login field value
         String login = loginField.getText();
         // Get the password field value
-        String password = passwordField.getPassword().toString();
+        String password = new String(passwordField.getPassword());
         // Check if login & password = admin
-        if (login.equals("admin") && password.equals("admin")){
+        DAO dao = new DAO();
+        try {
+            if (dao.exists(login, password)){
             // If that's the case, welcome the user
             JOptionPane.showMessageDialog(rootPane, "Bem vindo!");
             dispose();
-        } else {
-            // If not, inform that the user/password are invalid
-            JOptionPane.showMessageDialog(null, "Usuário inválido");
+            } else {
+                // If not, inform that the user/password are invalid
+                JOptionPane.showMessageDialog(null, "Usuário inválido");
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Parece que tivemos um problema. Tente novamente mais tarde.");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_confirmButtonActionPerformed
 
